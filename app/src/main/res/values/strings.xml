@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">News Today</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Settings</string>
+
+    <string name="fragment_news_headline">Today\'s News</string>
+
+    <string name="dummy_text">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</string>
+    <string name="dummy_section">world</string>
+    <string name="dummy_date">Oct 10, 2017</string>
+
+    <string name="dummy_section_1">World news</string>
+    <string name="dummy_section_2">Sport</string>
+    <string name="dummy_section_3">Health</string>
+
+    <string name="dummy_setting">Set Notifications</string>
+
+    <string name="font_family_medium">sans-serif-medium</string>
+
+</resources>
