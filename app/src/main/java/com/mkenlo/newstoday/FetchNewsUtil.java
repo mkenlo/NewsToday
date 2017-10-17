@@ -19,7 +19,6 @@ import java.nio.charset.Charset;
 
 public class FetchNewsUtil {
 
-    //final static String API_KEY = "5a8dd4c8-0c8b-4436-a836-15bb0ddb5bb9";
     private final static String API_BASEURL = "https://content.guardianapis.com/search?api-key=5a8dd4c8-0c8b-4436-a836-15bb0ddb5bb9";
 
     private String fetchNewsRequest(String queryParam) {
@@ -29,11 +28,9 @@ public class FetchNewsUtil {
         try {
             Uri.Builder built = Uri.parse(API_BASEURL).buildUpon();
             built.appendQueryParameter("show-fields", "thumbnail");
+            built.appendQueryParameter("show-tags", "contributor");
             built.appendQueryParameter("section", queryParam);
 
-            /*if (!queryParam.isEmpty() || queryParam != null)
-                built.appendQueryParameter("q", queryParam);
-            */
             Uri builtUri = built.build();
             Log.d("GetNewsData", builtUri.toString());
             URL url = new URL(builtUri.toString());

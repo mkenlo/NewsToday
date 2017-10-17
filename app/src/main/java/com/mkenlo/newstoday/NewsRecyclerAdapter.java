@@ -49,6 +49,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         try {
             JSONObject article = newsData.getJSONObject(position);
             holder.articleTitle.setText(article.getString("webTitle"));
+            holder.articleAuthor.setText(article.getJSONArray("tags").getJSONObject(0).getString("webTitle"));
             holder.articleSection.setText(article.getString("sectionName"));
             String formattedDate = reFormatDate(article.getString("webPublicationDate"));
             holder.articlePublishedDate.setText(formattedDate);
@@ -84,6 +85,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView articleTitle;
         TextView articleSection;
+        TextView articleAuthor;
         TextView articlePublishedDate;
         ImageView articleThumbnail;
         CardView articleCard;
@@ -93,6 +95,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
             articleTitle = (TextView) v.findViewById(R.id.article_title);
             articleSection = (TextView) v.findViewById(R.id.article_section);
+            articleAuthor = (TextView) v.findViewById(R.id.article_author);
             articlePublishedDate = (TextView) v.findViewById(R.id.article_date);
             articleThumbnail = (ImageView) v.findViewById(R.id.article_thumbnail);
             articleCard = (CardView) v.findViewById(R.id.article);

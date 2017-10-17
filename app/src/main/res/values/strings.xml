@@ -7,6 +7,7 @@
     <string name="fragment_news_headline">Today\'s News</string>
 
     <string name="dummy_text">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</string>
+    <string name="dummy_author">Jane Doe</string>
     <string name="dummy_section">world</string>
     <string name="dummy_date">Oct 10, 2017</string>
 

@@ -23,7 +23,7 @@
         android:id="@+id/switch1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set Notifications"
+        android:text="@string/dummy_setting"
         android:paddingTop="@dimen/medium_spacing"/>
 
 
