@@ -3,36 +3,32 @@ package com.mkenlo.newstoday;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements LoaderManager.LoaderCallbacks<JSONArray>{
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "keyword param";
-    private JSONArray newsList;
-    private FetchNewsTask myTask;
-    private String keyword;
+    private static final String ARG_PARAM = "default news section";
+    private String defaultNewsSection;
     NewsRecyclerAdapter mAdapter;
+    RecyclerView recyclerNewsList;
 
-   // private OnFragmentInteractionListener mListener;
 
     public NewsFragment() {
-        // Required empty public constructor
     }
 
     public static NewsFragment newInstance(String param) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param);
+        args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,67 +37,40 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            try {
-                newsList = new JSONArray(getArguments().getString(ARG_PARAM1));
-            }catch(JSONException ex){
-                Log.e("JSONEXCEPTION", ex.getMessage());
-            }
+            defaultNewsSection = getArguments().getString(ARG_PARAM);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.news_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerNewsList = (RecyclerView) rootView.findViewById(R.id.news_list);
+        recyclerNewsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new NewsRecyclerAdapter();
 
-        if(newsList!=null){
-            mAdapter = new NewsRecyclerAdapter(newsList);
-            recyclerView.setAdapter(mAdapter);
-        }
+        getLoaderManager().initLoader(0, null, this).forceLoad();
         return rootView;
     }
-/*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+
+
+    @Override
+    public Loader<JSONArray> onCreateLoader(int id, Bundle args) {
+        return new FetchNewsLoader(getActivity(), defaultNewsSection);
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    public void onLoadFinished(Loader<JSONArray> loader, JSONArray data) {
+        if(data !=null){
+            mAdapter.setNewsData(data);
+            recyclerNewsList.setAdapter(mAdapter);
         }
+
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onLoaderReset(Loader<JSONArray> loader) {
+
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-  /*  public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
-
 
 }

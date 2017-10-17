@@ -24,13 +24,18 @@ import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import static android.R.attr.format;
+
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.ViewHolder> {
 
     JSONArray newsData;
 
-    public NewsRecyclerAdapter(JSONArray newsData) {
-        this.newsData = newsData;
+    public NewsRecyclerAdapter() {
+    }
+
+    public void setNewsData(JSONArray data) {
+        this.newsData = data;
     }
 
     @Override
@@ -45,11 +50,11 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             JSONObject article = newsData.getJSONObject(position);
             holder.articleTitle.setText(article.getString("webTitle"));
             holder.articleSection.setText(article.getString("sectionName"));
-            String formattedDate = getFormattedDate(article.getString("webPublicationDate"));
+            String formattedDate = reFormatDate(article.getString("webPublicationDate"));
             holder.articlePublishedDate.setText(formattedDate);
 
-            if(article.has("fields")){
-                if (article.getJSONObject("fields").has("thumbnail")){
+            if (article.has("fields")) {
+                if (article.getJSONObject("fields").has("thumbnail")) {
                     DownloadImageTask task = new DownloadImageTask(holder.articleThumbnail);
                     task.execute(article.getJSONObject("fields").getString("thumbnail"));
                 }
@@ -95,26 +100,16 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         }
     }
 
-    private String getFormattedDate(String date){
-        try{
-            SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm z");
 
-            String[] dateAndTime = date.split("T|Z");
-            StringBuilder strDate =  new StringBuilder();
-            strDate.append(dateAndTime[0]);
-            strDate.append(" ");
-            strDate.append(dateAndTime[1]);
-
-            date = strDate.toString();
-            Date newDate = format.parse(date);
-            date = newDate.toString();
-
-        }catch(ParseException ex){
-            Log.e("ParseException", ex.getMessage());
-        }
-
-        return date;
+    private String reFormatDate(String date) {
+        String[] newdate = date.split("T|Z");
+        StringBuilder strDate = new StringBuilder();
+        strDate.append(newdate[0]);
+        strDate.append(" ");
+        strDate.append(newdate[1]);
+        return strDate.toString();
     }
+
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

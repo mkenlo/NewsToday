@@ -24,9 +24,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight2"
-        android:text="World News"
+        android:text="@string/dummy_section_1"
         android:padding="@dimen/small_spacing"
         android:layout_marginBottom="@dimen/small_spacing"/>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/news_list"
@@ -34,5 +36,8 @@
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
+
+
+
 
 </LinearLayout>
